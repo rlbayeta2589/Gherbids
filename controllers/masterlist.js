@@ -48,12 +48,7 @@ class MasterList {
 		let headers = ["Item Name", "Amount", "Min Price", "Category", "Keyword"];
 		let table_space = [30, 6, 9, 10, 10];
 		let rows = this.inventory.map((x) => x._rawData.slice(0, 5));
-
-		if (!headers.length || !rows.length) {
-			return "";
-		}
-
-		return table_format.formatInventoryTable(table_space, headers, rows);
+		return rows.length ? table_format.formatInventoryTable(table_space, headers, rows) : "";
 	}
 
 	getInfo() {
