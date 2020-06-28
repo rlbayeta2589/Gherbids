@@ -7,10 +7,12 @@ client.commands = new Discord.Collection();
 
 const prefix = process.env.PREFIX.substring(1);
 const masterlisthelper = require('./controllers/masterlisthelper');
+const biddinghelper = require('./controllers/biddinghelper');
 const tableformat = require('./utils/tabletextformat');
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 masterlisthelper.initialize();
+biddinghelper.periodicScheduleCheck();
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	tableformat.addCommand(command.name, command.description, command.sample);
