@@ -1,4 +1,4 @@
-const masterlist = require('../controllers/masterlist');
+const masterlisthelper = require('../controllers/masterlisthelper');
 
 module.exports = {
 	name: 'stalkpoints',
@@ -14,10 +14,10 @@ module.exports = {
 
 		if (mention) {
 			console.log(mention);
-			ign = masterlist.getInGameName(mention);
+			ign = masterlisthelper.getInGameName(mention);
 		}
 
-		let points = masterlist.getPersonalPoints(ign);
+		let points = masterlisthelper.getPersonalPoints(ign);
 
 		if (!points) {
 			return message.reply(`Sorry, player ***${ign}*** does not exist in my data.`);

@@ -1,4 +1,4 @@
-const masterlist = require('../controllers/masterlist');
+const masterlisthelper = require('../controllers/masterlisthelper');
 
 module.exports = {
 	name: 'mypoints',
@@ -6,8 +6,8 @@ module.exports = {
 	sample: ['/mypoints'],
 	execute(message, args) {
 		let user_id = message.author.id;
-		let ign = masterlist.getInGameName(user_id);
-		let points = masterlist.getPersonalPoints(ign);
+		let ign = masterlisthelper.getInGameName(user_id);
+		let points = masterlisthelper.getPersonalPoints(ign);
 		message.channel.send(`You currently have **${points} points**.`);
 	},
 };

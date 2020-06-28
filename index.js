@@ -6,11 +6,11 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
 const prefix = process.env.PREFIX.substring(1);
-const masterlist = require('./controllers/masterlist');
+const masterlisthelper = require('./controllers/masterlisthelper');
 const tableformat = require('./utils/tabletextformat');
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-masterlist.initialize();
+masterlisthelper.initialize();
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	tableformat.addCommand(command.name, command.description, command.sample);

@@ -3,7 +3,7 @@ const config = require('../gherbids.json');
 const table_format = require('../utils/tabletextformat');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-class MasterList {
+class MasterListHelper {
 
 	constructor() {
 		this.doc = new GoogleSpreadsheet(process.env.MASTERLIST_ID);
@@ -34,6 +34,10 @@ class MasterList {
 		// this.admins = await admins.getRows();
 	}
 
+	getMasterListURL() {
+		return ["https://docs.google.com/spreadsheets/d/", process.env.MASTERLIST_ID].join('');
+	}
+
 	getInGameName(user_id) {
 		let row = this.names.filter((x) => x["Discord ID"] == user_id );
 		return row.length ? row[0]["Team Name"] : "";
@@ -57,4 +61,4 @@ class MasterList {
 
 }
 
-module.exports = new MasterList();
+module.exports = new MasterListHelper();
