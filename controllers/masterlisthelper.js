@@ -14,8 +14,8 @@ class MasterListHelper {
 		await this.doc.loadInfo();
 
 		let names = this.doc.sheetsByIndex[0];
-		let points = this.doc.sheetsByIndex[1]; 	
-		let inventory = this.doc.sheetsByIndex[2]; 
+		let points = this.doc.sheetsByIndex[1];
+		let inventory = this.doc.sheetsByIndex[2];
 		let history = this.doc.sheetsByIndex[3];
 		let items = this.doc.sheetsByIndex[4];
 		let orders = this.doc.sheetsByIndex[5];
@@ -30,7 +30,7 @@ class MasterListHelper {
 		// this.items = await items.getRows();
 		// this.orders = await orders.getRows();
 		// this.rewards = await rewards.getRows();
-		// this.schedules = await schedules.getRows();
+		this.schedules = await schedules.getRows();
 		// this.admins = await admins.getRows();
 	}
 
@@ -53,6 +53,21 @@ class MasterListHelper {
 		let table_space = [30, 6, 9, 10, 10];
 		let rows = this.inventory.map((x) => x._rawData.slice(0, 5));
 		return rows.length ? table_format.formatInventoryTable(table_space, headers, rows) : "";
+	}
+
+	getLatestSchedule() {
+		if (!this.schedules || !this.schedules.length) return null;
+
+		let row = this.schedules[this.schedules.length - 1]
+		let latest_sched = row._rawData;
+		let bidding_sched = {
+			'name': latest_sched[0],
+			'date': latest_sched[1],
+			'duration': latest_sched[2],
+			'timezone': latest_sched[3],
+		}
+		
+		return bidding_sched;
 	}
 
 	getInfo() {
