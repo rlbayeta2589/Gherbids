@@ -1,3 +1,4 @@
+const moment = require('moment');
 const env = require('dotenv').config();
 const config = require('../gherbids.json');	
 const table_format = require('../utils/tabletextformat');
@@ -24,7 +25,7 @@ class MasterListHelper {
 		let admins = this.doc.sheetsByIndex[8];
 
 		this.names = await names.getRows();
-		this.points = await points.getRows(); 	
+		this.points = await points.getRows(); 
 		this.inventory = await inventory.getRows(); 
 		// this.history = await history.getRows();
 		// this.items = await items.getRows();
@@ -55,10 +56,21 @@ class MasterListHelper {
 		return rows.length ? table_format.formatInventoryTable(table_space, headers, rows) : "";
 	}
 
+	async syncScheduleData() {
+		let schedules = this.doc.sheetsByIndex[7];
+		this.schedules = await schedules.getRows();
+	}
+
+	isBiddingScheduleValid(data) {
+		let today = moment();
+		let end_sched = moment(data.date).add(data.duration, 'hours');
+		return today.isSameOrBefore(end_sched);
+	}
+
 	getLatestSchedule() {
 		if (!this.schedules || !this.schedules.length) return null;
 
-		let row = this.schedules[this.schedules.length - 1]
+		let row = this.schedules[this.schedules.length - 1];
 		let latest_sched = row._rawData;
 		let bidding_sched = {
 			'name': latest_sched[0],
@@ -67,7 +79,7 @@ class MasterListHelper {
 			'timezone': latest_sched[3],
 		}
 		
-		return bidding_sched;
+		return this.isBiddingScheduleValid(bidding_sched) ? bidding_sched : null;
 	}
 
 	getInfo() {

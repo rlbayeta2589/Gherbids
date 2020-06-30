@@ -23,6 +23,6 @@ module.exports = {
 			return message.reply(`Sorry, player ***${ign}*** does not exist in my data.`);
 		}
 
-		message.channel.send(`Player ***${ign}*** currenly have **${points} points**.`)
+		message.channel.send(`Player ***${ign}*** currenly has **${points} points**.`)
 	},
 };

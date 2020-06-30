@@ -1,5 +1,5 @@
 const masterlisthelper = require('../controllers/masterlisthelper');
-const biddinghelper = require('../controllers/biddinghelper').default;
+const biddinghelper = require('../controllers/biddinghelper');
 const date_format = require('../utils/datetimeformat');
 
 module.exports = {
@@ -17,6 +17,6 @@ module.exports = {
 
         let temp = biddinghelper.isBiddingActive();
 
-		message.channel.send("BIDDING STATUS : " + temp ? "active" : "not active");
+		message.channel.send("BIDDING STATUS : " + (temp ? "active" : "not active"));
 	},
 };
