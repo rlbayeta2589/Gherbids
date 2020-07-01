@@ -1,6 +1,6 @@
 const moment = require('moment');
 const env = require('dotenv').config();
-const config = require('../gherbids.json');	
+const spreadsheetAPI = require('../gherbids.json');	
 const table_format = require('../utils/tabletextformat');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
@@ -11,7 +11,7 @@ class MasterListHelper {
 	}
 
 	async initialize() {
-		await this.doc.useServiceAccountAuth(config);
+		await this.doc.useServiceAccountAuth(spreadsheetAPI);
 		await this.doc.loadInfo();
 
 		let names = this.doc.sheetsByIndex[0];

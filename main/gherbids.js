@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const masterlisthelper = require('../controllers/masterlisthelper');
 const biddinghelper = require('../controllers/biddinghelper');
+const clienthelper = require('../controllers/clienthelper');
 const tableformat = require('../utils/tabletextformat');
 
 class Gherbids {
@@ -19,6 +20,9 @@ class Gherbids {
         console.log('Initializing schedule heartbeat . . .');
         biddinghelper.periodicScheduleCheck();
 
+        console.log('Binding bot client to helpers . . .');
+        clienthelper.bindDiscordClient(this.client);
+
         console.log('Logging in . . .');
         this.client.login(process.env.BOT_TOKEN);
     }
@@ -29,13 +33,16 @@ class Gherbids {
 
         console.log('Getting ready for messages . . .');
         this.bindMessageEvent();
+
+        console.log('Importing bot commands . . .');
+        this.importCommands();
     }
 
     importCommands() {
         let commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
         for (let file of commandFiles) {
-            let command = require(`./commands/${file}`);
+            let command = require(`../commands/${file}`);
             tableformat.addCommand(command.name, command.description, command.sample);
             this.client.commands.set(command.name, command);
         }
@@ -45,6 +52,8 @@ class Gherbids {
         this.client.once('ready', () => {
             console.log('\n=========  GHERBIDS NOW ONLINE  =========\n');
             this.client.user.setActivity("as 'Son of Ghervis'", {'type': 'WATCHING'});
+
+            this.client.channels.cache.get(process.env.BIDDING_CHANNEL_ID).send("Test Message to Bidding Channel");
         });
     }
 
@@ -54,8 +63,8 @@ class Gherbids {
 
             if (!msg.content.startsWith(prefix) || msg.author.bot) return;
         
-            const args = msg.content.slice(prefix.length).split(/ +/);
-            const command = args.shift().toLowerCase();
+            let args = msg.content.slice(prefix.length).split(/ +/);
+            let command = args.shift().toLowerCase();
         
             if (!this.client.commands.has(command)) return;
         
@@ -68,6 +77,10 @@ class Gherbids {
         
             console.log(msg.content);
         });
+    }
+
+    sendBiddingChannelMessage(msg) {
+        this.client.get(process.env.BIDDING_CHANNEL_ID).send(msg);
     }
  }
 

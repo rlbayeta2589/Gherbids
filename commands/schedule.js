@@ -14,9 +14,9 @@ module.exports = {
 		}
 
 		bidding_msg = date_format.scheduleMessageFormat(bidding_sched);
+		message.channel.send(bidding_msg);
 
-		let temp = biddinghelper.isBiddingActive();
-
-		message.channel.send("BIDDING STATUS : " + (temp ? "active" : "not active"));
+		// let temp = biddinghelper.isBiddingActive();
+		// message.channel.send("BIDDING STATUS : " + (temp ? "active" : "not active"));
 	},
 };
